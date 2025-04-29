@@ -3,7 +3,7 @@ name: Generate Doxygen Documentation
 on:
   push:
     tags:
-      - 'v*'  
+      - 'v*'  # Trigger when a new version tag is pushed
 
 jobs:
   generate-docs:
@@ -17,10 +17,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
       - name: 🧾 Run Doxygen
-        run: doxygen Doxyfile
+        run: |
+          cd laboratories/cicd-documentation  # Change to the correct directory
+          doxygen Doxyfile  # Run Doxygen with the Doxyfile in that directory
 
       - name: 📦 Upload Documentation Artifact
         uses: actions/upload-artifact@v4
         with:
           name: doxygen-docs
-          path: docs/html  # sau folderul în care Doxygen generează outputul
+          path: laboratories/cicd-documentation/html  # Adjust path to output directory
